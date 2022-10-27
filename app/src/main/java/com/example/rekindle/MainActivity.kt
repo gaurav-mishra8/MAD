@@ -1,8 +1,10 @@
 package com.example.rekindle
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -14,16 +16,22 @@ import com.example.rekindle.ui.theme.RekindleTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("Cold Start", "MainActivity onCreate start")
         super.onCreate(savedInstanceState)
-        setContent {
 
+        val mainViewModel by viewModels<MainViewModel>()
+
+        setContent {
             RekindleTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    renderHome()
+                    val loginState = mainViewModel.isLogin.collectAsState(initial = false)
+                    RenderHome(loginState.value) {
+                        mainViewModel.onLoginClick()
+                    }
                 }
             }
         }
@@ -31,14 +39,12 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun renderHome() {
-    var isLogin by remember { mutableStateOf(false) }
-
-    if (isLogin) {
-        Greeting(name = "Hello Gandarv")
+fun RenderHome(loginState: Boolean, onLoginClick: () -> Unit) {
+    if (loginState) {
+        Greeting(name = "Hello Gendry")
     } else {
         Login(onSubmit = {
-            isLogin = it
+            onLoginClick.invoke()
         })
     }
 }
@@ -52,6 +58,6 @@ fun Greeting(name: String) {
 @Composable
 fun DefaultPreview() {
     RekindleTheme {
-        renderHome()
+        RenderHome(false) {}
     }
 }
