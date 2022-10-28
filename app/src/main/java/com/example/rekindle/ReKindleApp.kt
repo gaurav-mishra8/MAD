@@ -7,7 +7,9 @@ import android.app.Application
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class ReKindleApp : Application() {
 
     override fun onCreate() {

@@ -12,14 +12,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.rekindle.photos.ImageList
 import com.example.rekindle.ui.theme.RekindleTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("Cold Start", "MainActivity onCreate start")
         super.onCreate(savedInstanceState)
 
-        val mainViewModel by viewModels<MainViewModel>()
 
         setContent {
             RekindleTheme {
@@ -28,10 +31,14 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    val loginState = mainViewModel.isLogin.collectAsState(initial = false)
+                    val mainViewModel = hiltViewModel<MainViewModel>()
+
+                    /*val loginState = mainViewModel.isLogin.collectAsState(initial = false)
                     RenderHome(loginState.value) {
                         mainViewModel.onLoginClick()
-                    }
+                    }*/
+                    val images = mainViewModel.popularImages.collectAsState()
+                    ImageList(images = images.value)
                 }
             }
         }
