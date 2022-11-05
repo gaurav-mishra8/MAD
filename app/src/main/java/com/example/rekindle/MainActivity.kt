@@ -4,16 +4,22 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.rekindle.photos.ImageList
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.rekindle.ui.theme.RekindleTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,16 +35,15 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = MaterialTheme.colors.background,
                 ) {
-                    val mainViewModel = hiltViewModel<MainViewModel>()
+                    val navController = rememberNavController()
 
-                    /*val loginState = mainViewModel.isLogin.collectAsState(initial = false)
-                    RenderHome(loginState.value) {
-                        mainViewModel.onLoginClick()
-                    }*/
-                    val images = mainViewModel.popularImages.collectAsState()
-                    ImageList(images = images.value)
+                    Scaffold(bottomBar = {
+                        BottomNavigation(navController = navController)
+                    }) {
+                        NavigationGraph(navController = navController)
+                    }
                 }
             }
         }
@@ -46,25 +51,63 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun RenderHome(loginState: Boolean, onLoginClick: () -> Unit) {
-    if (loginState) {
-        Greeting(name = "Hello Gendry")
-    } else {
-        Login(onSubmit = {
-            onLoginClick.invoke()
-        })
+fun NavigationGraph(navController: NavHostController) {
+    NavHost(navController, startDestination = BottomNavItem.Home.route) {
+        composable(BottomNavItem.Home.route) {
+            HomeScreen()
+        }
+        composable(BottomNavItem.Settings.route) {
+            SettingsScreen()
+        }
     }
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun BottomNavigation(navController: NavController) {
+    val items = listOf(
+        BottomNavItem.Home,
+        BottomNavItem.Settings
+    )
+    BottomNavigation(
+        backgroundColor = colorResource(id = R.color.teal_200),
+        contentColor = Color.Black
+    ) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+        items.forEach { item ->
+            BottomNavigationItem(
+                icon = { Icon(painterResource(id = item.icon), contentDescription = item.title) },
+                label = {
+                    Text(
+                        text = item.title,
+                        fontSize = 9.sp
+                    )
+                },
+                selectedContentColor = Color.Black,
+                unselectedContentColor = Color.Black.copy(0.4f),
+                alwaysShowLabel = true,
+                selected = currentRoute == item.route,
+                onClick = {
+                    navController.navigate(item.route) {
+
+                        navController.graph.startDestinationRoute?.let { screen_route ->
+                            popUpTo(screen_route) {
+                                saveState = true
+                            }
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     RekindleTheme {
-        RenderHome(false) {}
+        HomeScreen()
     }
 }
