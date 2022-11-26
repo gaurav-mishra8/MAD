@@ -1,7 +1,6 @@
 package com.example.rekindle
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,9 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("Cold Start", "MainActivity onCreate start")
         super.onCreate(savedInstanceState)
-
 
         setContent {
             RekindleTheme {
@@ -108,6 +105,6 @@ fun BottomNavigation(navController: NavController) {
 @Composable
 fun DefaultPreview() {
     RekindleTheme {
-        HomeScreen()
+        SettingsScreen()
     }
 }
