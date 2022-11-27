@@ -19,6 +19,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.rekindle.movies.MovieScreen
 import com.example.rekindle.ui.theme.RekindleTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,7 +52,7 @@ class MainActivity : ComponentActivity() {
 fun NavigationGraph(navController: NavHostController) {
     NavHost(navController, startDestination = BottomNavItem.Home.route) {
         composable(BottomNavItem.Home.route) {
-            HomeScreen()
+            MovieScreen()
         }
         composable(BottomNavItem.Settings.route) {
             SettingsScreen()
