@@ -1,12 +1,12 @@
 package com.example.rekindle.movies.data
 
+import com.example.rekindle.Result
 import com.example.rekindle.movies.model.Movie
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
-import com.example.rekindle.Result
 import kotlinx.coroutines.flow.onStart
+import javax.inject.Inject
 
 
 class MoviesRepo @Inject constructor(
