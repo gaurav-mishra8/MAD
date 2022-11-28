@@ -3,8 +3,10 @@ package com.example.rekindle.movies.model
 import com.google.gson.annotations.SerializedName
 
 data class SearchMovieResponse(
-    @SerializedName("Search") val movies: List<Movie>,
-    @SerializedName("totalResults") val totalResults: String
+    @SerializedName("Search") val movies: List<Movie>?,
+    @SerializedName("totalResults") val totalResults: String?,
+    @SerializedName("Error") val error: String?
+
 )
 
 data class Movie(
