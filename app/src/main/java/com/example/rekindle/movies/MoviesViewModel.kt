@@ -7,6 +7,7 @@ import com.example.rekindle.Result
 import com.example.rekindle.movies.data.MoviesRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
@@ -25,11 +26,14 @@ class MoviesViewModel @Inject constructor(
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
     val state: StateFlow<MoviesState> = searchQuery.debounce(200)
-        .filter { it.length > 2 }
         .flatMapLatest { query ->
-            moviesRepo.searchMovie(query)
+            if (query.length < 3) {
+                flowOf(Result.Success(emptyList()))
+            } else {
+                moviesRepo.searchMovie(query)
+            }
         }.map { result ->
             when (result) {
                 is Result.Success -> {
@@ -56,8 +60,8 @@ class MoviesViewModel @Inject constructor(
             }
         }.stateIn(
             scope = viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            MoviesState()
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = MoviesState()
         )
 
     fun searchMovies(query: String?) {
