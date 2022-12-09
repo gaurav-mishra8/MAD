@@ -4,7 +4,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -15,7 +14,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,15 +27,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
+import com.example.rekindle.movie_detail_route
 import com.example.rekindle.movies.model.Movie
-import com.example.rekindle.movies.movieslist.MoviesViewModel
 
 @Composable
 fun MovieScreen(
     viewModel: MoviesViewModel = hiltViewModel(),
+    navController: NavHostController
 ) {
     val state = viewModel.state.collectAsState()
     val query = rememberSaveable { mutableStateOf("") }
@@ -78,7 +79,7 @@ fun MovieScreen(
             } else {
                 MovieList(
                     movies = state.value.movies,
-                    onClick = viewModel::onItemClick
+                    navController
                 )
             }
         }
@@ -86,7 +87,10 @@ fun MovieScreen(
 }
 
 @Composable
-fun MovieList(movies: List<Movie>, onClick: (Movie) -> Unit) {
+fun MovieList(
+    movies: List<Movie>,
+    navController: NavHostController
+) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 128.dp),
     ) {
@@ -94,15 +98,16 @@ fun MovieList(movies: List<Movie>, onClick: (Movie) -> Unit) {
             items = movies,
             key = { it.id },
         ) { movie ->
-            Movie(movie, onClick)
+            MovieItem(movie = movie) {
+                val movieDetailRoute = "${movie_detail_route}/${it.id}"
+                navController.navigate(route = movieDetailRoute)
+            }
         }
     }
 }
 
 @Composable
-fun Movie(movie: Movie, onClick: (Movie) -> Unit) {
-    val interactionSource = remember { MutableInteractionSource() }
-
+fun MovieItem(movie: Movie, onClick: (Movie) -> Unit) {
     Box(
         modifier = Modifier
             .padding(8.dp)

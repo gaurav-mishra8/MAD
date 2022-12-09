@@ -21,12 +21,11 @@ import com.example.rekindle.movies.model.MovieDetail
 @Composable
 fun MovieDetailScreen(
     viewModel: MovieDetailViewModel = hiltViewModel(),
-    modifier: Modifier
 ) {
     val state = viewModel.state.collectAsState()
     val movieDetailState = state.value
 
-    Box(modifier.fillMaxSize()) {
+    Box(Modifier.fillMaxSize()) {
         if (movieDetailState.isLoading) {
             CircularProgressIndicator()
         } else if (movieDetailState.movieDetail != null) {
@@ -62,6 +61,15 @@ fun MovieDetail(
             text = movieDetail.title,
             fontSize = 28.sp,
             fontFamily = FontFamily.Cursive
+        )
+
+        Text(
+            text = movieDetail.actors,
+            fontSize = 16.sp
+        )
+        Text(
+            text = movieDetail.year,
+            fontSize = 12.sp
         )
     }
 
