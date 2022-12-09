@@ -1,10 +1,11 @@
-package com.example.rekindle.movies
+package com.example.rekindle.movies.movieslist
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rekindle.Result
 import com.example.rekindle.movies.data.MoviesRepo
+import com.example.rekindle.movies.model.Movie
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -69,5 +70,9 @@ class MoviesViewModel @Inject constructor(
             searchQuery.value = it
             savedStateHandle["query"] = it
         }
+    }
+
+    fun onItemClick(movie: Movie) {
+        println("You have clicked ${movie.title}")
     }
 }

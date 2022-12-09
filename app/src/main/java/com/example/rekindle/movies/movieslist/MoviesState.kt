@@ -1,4 +1,4 @@
-package com.example.rekindle.movies
+package com.example.rekindle.movies.movieslist
 
 import com.example.rekindle.movies.model.Movie
 

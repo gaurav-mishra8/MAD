@@ -1,8 +1,10 @@
-package com.example.rekindle.movies
+package com.example.rekindle.movies.movieslist
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -13,10 +15,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -27,7 +31,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import coil.size.Scale
 import com.example.rekindle.movies.model.Movie
+import com.example.rekindle.movies.movieslist.MoviesViewModel
 
 @Composable
 fun MovieScreen(
@@ -70,14 +76,17 @@ fun MovieScreen(
             } else if (state.value.error != null) {
                 Text(text = state.value.error!!)
             } else {
-                MovieList(movies = state.value.movies)
+                MovieList(
+                    movies = state.value.movies,
+                    onClick = viewModel::onItemClick
+                )
             }
         }
     }
 }
 
 @Composable
-fun MovieList(movies: List<Movie>) {
+fun MovieList(movies: List<Movie>, onClick: (Movie) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 128.dp),
     ) {
@@ -85,28 +94,36 @@ fun MovieList(movies: List<Movie>) {
             items = movies,
             key = { it.id },
         ) { movie ->
-            Movie(movie)
+            Movie(movie, onClick)
         }
     }
 }
 
 @Composable
-fun Movie(movie: Movie) {
+fun Movie(movie: Movie, onClick: (Movie) -> Unit) {
+    val interactionSource = remember { MutableInteractionSource() }
+
     Box(
         modifier = Modifier
             .padding(8.dp)
-            .border(BorderStroke(2.dp, color = Color.Black)),
+            .border(BorderStroke(2.dp, color = Color.Black))
+            .clickable(true, onClick = {
+                onClick.invoke(movie)
+            }),
     ) {
         Column {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(movie.imgUrl)
                     .crossfade(true)
+                    .scale(Scale.FILL)
                     .build(),
                 contentDescription = movie.title,
+                contentScale = ContentScale.Crop,
                 error = painterResource(com.example.rekindle.R.drawable.movie_placeholder),
                 fallback = painterResource(com.example.rekindle.R.drawable.movie_placeholder),
-                placeholder = painterResource(com.example.rekindle.R.drawable.movie_placeholder)
+                placeholder = painterResource(com.example.rekindle.R.drawable.movie_placeholder),
+                modifier = Modifier.fillMaxSize()
             )
             Text(
                 text = movie.title,
