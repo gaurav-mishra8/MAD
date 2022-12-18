@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Rekindle</string>
+
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+
+    <!-- Paste BOTH strings as required -->
+    <string name="back4app_app_id">qgSboWTpkvWgCE1uWLhpvJmf8loDBGMjckOJdK8x</string>
+    <string name="back4app_client_key">hKsn8ZZIAiJ9qTpeyMgDZRSyfSqucVTC1mw8fyty</string>
 </resources>

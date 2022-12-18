@@ -1,6 +1,7 @@
 package com.example.rekindle
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,12 +23,23 @@ import androidx.navigation.compose.rememberNavController
 import com.example.rekindle.movies.moviedetail.MovieDetailScreen
 import com.example.rekindle.movies.movieslist.MovieScreen
 import com.example.rekindle.ui.theme.RekindleTheme
+import com.parse.ParseObject
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+       /* val firstObject = ParseObject("B4aVehicle")
+        firstObject.put("name","Gaurav2")
+        firstObject.saveInBackground {
+            if (it != null){
+                it.localizedMessage?.let { message -> Log.e("MainActivity", message) }
+            }else{
+                Log.d("MainActivity","Object saved.")
+            }
+        }*/
 
         setContent {
             RekindleTheme {
