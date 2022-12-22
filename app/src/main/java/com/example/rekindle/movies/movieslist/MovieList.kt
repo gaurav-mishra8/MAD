@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -41,29 +41,22 @@ fun MovieScreen(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    val state = viewModel.state.collectAsState()
-    val query = rememberSaveable { mutableStateOf("") }
+    val state = viewModel.updatedState.collectAsState()
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        OutlinedTextField(
-            value = query.value,
-            onValueChange = { newText ->
-                query.value = newText
-                viewModel.searchMovies(newText)
+    Column(modifier = modifier.fillMaxSize()) {
+        MovieAppBar(
+            title = "MOVIES",
+            hintText = "Search Movies..",
+            isExpanded = state.value.isSearchMode,
+            onSearchOpen = {
+                viewModel.toggleSearch()
             },
-            modifier = Modifier
-                .padding(horizontal = 8.dp, vertical = 4.dp)
-                .background(color = Color.LightGray)
-                .fillMaxWidth(),
-            placeholder = {
-                Text(
-                    text = "Search Movies..",
-                    style = TextStyle(fontSize = 18.sp, color = Color.DarkGray)
-                )
-            }
+            onSearchClose = {
+                viewModel.toggleSearch()
+            },
+            onSearchText = { query ->
+                viewModel.searchMovies(query)
+            },
         )
 
         Spacer(

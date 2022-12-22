@@ -1,7 +1,6 @@
 package com.example.rekindle
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,7 +23,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.rekindle.movies.moviedetail.MovieDetailScreen
 import com.example.rekindle.movies.movieslist.MovieScreen
 import com.example.rekindle.ui.theme.RekindleTheme
-import com.parse.ParseObject
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,10 +48,10 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background,
                 ) {
                     val navController = rememberNavController()
-
-                    Scaffold(bottomBar = {
-                        BottomNavigation(navController = navController)
-                    }) { innerPadding ->
+                    Scaffold(
+                        bottomBar = {
+                            BottomNavigation(navController = navController)
+                        }) { innerPadding ->
                         NavigationGraph(
                             navController = navController,
                             modifier = Modifier.padding(innerPadding)

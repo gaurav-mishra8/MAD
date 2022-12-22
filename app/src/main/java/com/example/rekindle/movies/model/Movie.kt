@@ -21,10 +21,6 @@ data class Movie(
     fun getPosterUrl(): String {
         return "$IMAGE_BASE_URL${posterPath}"
     }
-
-    fun getBackdropUrl(): String {
-        return "$IMAGE_BASE_URL${backdropPath}"
-    }
 }
 
 data class GetPopularMoviesResponse(

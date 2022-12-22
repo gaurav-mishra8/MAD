@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rekindle.Result
 import com.example.rekindle.movies.data.MoviesRepo
-import com.example.rekindle.movies.model.Movie
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -18,7 +17,9 @@ class MoviesViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val searchQuery: MutableStateFlow<String> = MutableStateFlow("")
+    private val searchMovies = MutableStateFlow("")
+    private val latestMovies = MutableStateFlow(Unit)
+    private val isSearchActive = savedStateHandle.getStateFlow("isSearchActive", false)
 
     init {
         val query = savedStateHandle.get<String?>("query")
@@ -27,36 +28,49 @@ class MoviesViewModel @Inject constructor(
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-    val state: StateFlow<MoviesState> = searchQuery.debounce(200)
-        .flatMapLatest { query ->
-            if (query.length < 3) {
-                flowOf(Result.Success(emptyList()))
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
+    val updatedState: StateFlow<MoviesState> =
+        combine(latestMovies, searchMovies, isSearchActive) { _, searchText, _ ->
+            if (searchText.isNotEmpty()) {
+                searchMovies
+                    .debounce(200)
+                    .flatMapLatest { query ->
+                        if (query.length < 3) {
+                            return@flatMapLatest flowOf(Result.Success(emptyList()))
+                        } else {
+                            return@flatMapLatest moviesRepo.searchMovie(query)
+                        }
+                    }
             } else {
-                moviesRepo.searchMovie(query)
+                moviesRepo.getLatestMovies()
             }
-        }.map { result ->
-            when (result) {
-                is Result.Success -> {
-                    MoviesState(
-                        movies = result.data,
-                        isLoading = false,
-                        error = null,
-                    )
-                }
-                is Result.Loading -> {
-                    MoviesState(
-                        movies = emptyList(),
-                        isLoading = true,
-                        error = null,
-                    )
-                }
-                is Result.Error -> {
-                    MoviesState(
-                        movies = emptyList(),
-                        isLoading = false,
-                        error = result.exception?.message ?: "Something went wrong",
-                    )
+        }.flatMapLatest { resultFlow ->
+            resultFlow.map { result ->
+                when (result) {
+                    is Result.Success -> {
+                        MoviesState(
+                            movies = result.data,
+                            isLoading = false,
+                            error = null,
+                            isSearchMode = isSearchActive.value
+                        )
+                    }
+                    is Result.Loading -> {
+                        MoviesState(
+                            movies = emptyList(),
+                            isLoading = true,
+                            error = null,
+                            isSearchMode = isSearchActive.value
+                        )
+                    }
+                    is Result.Error -> {
+                        MoviesState(
+                            movies = emptyList(),
+                            isLoading = false,
+                            error = result.exception?.message ?: "Something went wrong",
+                            isSearchMode = isSearchActive.value
+                        )
+                    }
                 }
             }
         }.stateIn(
@@ -67,12 +81,16 @@ class MoviesViewModel @Inject constructor(
 
     fun searchMovies(query: String?) {
         query?.let {
-            searchQuery.value = it
+            searchMovies.value = it
             savedStateHandle["query"] = it
         }
     }
 
-    fun onItemClick(movie: Movie) {
-        println("You have clicked ${movie.title}")
+    fun toggleSearch() {
+        savedStateHandle["isSearchActive"] = !isSearchActive.value
+        if (!isSearchActive.value) {
+            searchMovies.value = ""
+            savedStateHandle["query"] = ""
+        }
     }
 }

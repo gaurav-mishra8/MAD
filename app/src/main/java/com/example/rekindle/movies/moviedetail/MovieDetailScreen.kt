@@ -43,7 +43,7 @@ fun MovieDetail(
     Column {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(movieDetail.getPosterUrl())
+                .data(movieDetail.getBackdropUrl())
                 .crossfade(true)
                 .scale(Scale.FILL)
                 .build(),

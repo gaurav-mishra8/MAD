@@ -2,7 +2,7 @@ package com.example.rekindle.movies.model
 
 data class MovieDetail(
     val adult: Boolean,
-    val backdrop_path: String,
+    val backdrop_path: String?,
     val belongs_to_collection: BelongsToCollection,
     val budget: Int,
     val genres: List<Genre>,
@@ -17,7 +17,7 @@ data class MovieDetail(
     val production_companies: List<ProductionCompany>,
     val production_countries: List<ProductionCountry>,
     val release_date: String,
-    val revenue: Int,
+    val revenue: Long,
     val runtime: Int,
     val spoken_languages: List<SpokenLanguage>,
     val status: String,
@@ -27,11 +27,14 @@ data class MovieDetail(
     val vote_average: Double,
     val vote_count: Int
 ) {
-    fun getPosterUrl(): String {
+    private fun getPosterUrl(): String {
         return "$IMAGE_BASE_URL${poster_path}"
     }
 
     fun getBackdropUrl(): String {
+        if (backdrop_path.isNullOrEmpty()) {
+            return getPosterUrl()
+        }
         return "$IMAGE_BASE_URL${backdrop_path}"
     }
 }

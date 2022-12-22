@@ -11,11 +11,24 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
-
 class MoviesRepo @Inject constructor(
     private val moviesService: MoviesService,
     private val searchResultDao: SearchResultDao
 ) {
+    fun getLatestMovies(): Flow<Result<List<Movie>>> = flow {
+        val movies = moviesService.getPopularMovies().results
+
+        val result: Result<List<Movie>> = if (movies?.isEmpty() == true) {
+            Result.Success(emptyList())
+        } else {
+            Result.Success(movies!!)
+        }
+        emit(result)
+    }.onStart {
+        emit(Result.Loading)
+    }.catch { exception ->
+        emit(Result.Error(exception))
+    }
 
     fun searchMovie(query: String): Flow<Result<List<Movie>>> = flow {
         val movies = moviesService.searchMovies(query).results
@@ -48,9 +61,5 @@ class MoviesRepo @Inject constructor(
         emit(Result.Loading)
     }.catch { exception ->
         emit(Result.Error(exception = exception))
-    }
-
-    fun getLatestMovies() {
-
     }
 }
