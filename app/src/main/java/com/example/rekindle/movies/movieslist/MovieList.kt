@@ -38,15 +38,15 @@ import com.example.rekindle.movies.model.Movie
 @Composable
 fun MovieScreen(
     viewModel: MoviesViewModel = hiltViewModel(),
-    navController: NavHostController
+    navController: NavHostController,
+    modifier: Modifier
 ) {
     val state = viewModel.state.collectAsState()
     val query = rememberSaveable { mutableStateOf("") }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(8.dp)
     ) {
         OutlinedTextField(
             value = query.value,
@@ -55,6 +55,7 @@ fun MovieScreen(
                 viewModel.searchMovies(newText)
             },
             modifier = Modifier
+                .padding(horizontal = 8.dp, vertical = 4.dp)
                 .background(color = Color.LightGray)
                 .fillMaxWidth(),
             placeholder = {
@@ -111,6 +112,7 @@ fun MovieItem(movie: Movie, onClick: (Movie) -> Unit) {
     Box(
         modifier = Modifier
             .padding(8.dp)
+            .height(248.dp)
             .border(BorderStroke(2.dp, color = Color.Black))
             .clickable(true, onClick = {
                 onClick.invoke(movie)
@@ -128,21 +130,15 @@ fun MovieItem(movie: Movie, onClick: (Movie) -> Unit) {
                 error = painterResource(com.example.rekindle.R.drawable.movie_placeholder),
                 fallback = painterResource(com.example.rekindle.R.drawable.movie_placeholder),
                 placeholder = painterResource(com.example.rekindle.R.drawable.movie_placeholder),
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.height(180.dp)
             )
             Text(
                 text = movie.title,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .padding(horizontal = 4.dp)
+                    .padding(horizontal = 4.dp, vertical = 8.dp)
                     .fillMaxWidth(),
-                style = TextStyle(textAlign = TextAlign.Center)
-            )
-            Text(
-                text = "Release Date: ${movie.releaseDate}",
-                modifier = Modifier
-                    .padding(horizontal = 4.dp)
-                    .fillMaxWidth(),
+                maxLines = 3,
                 style = TextStyle(textAlign = TextAlign.Center)
             )
             Spacer(modifier = Modifier.height(8.dp))

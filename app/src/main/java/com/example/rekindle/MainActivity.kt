@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,15 +32,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-       /* val firstObject = ParseObject("B4aVehicle")
-        firstObject.put("name","Gaurav2")
-        firstObject.saveInBackground {
-            if (it != null){
-                it.localizedMessage?.let { message -> Log.e("MainActivity", message) }
-            }else{
-                Log.d("MainActivity","Object saved.")
-            }
-        }*/
+        /* val firstObject = ParseObject("B4aVehicle")
+         firstObject.put("name","Gaurav2")
+         firstObject.saveInBackground {
+             if (it != null){
+                 it.localizedMessage?.let { message -> Log.e("MainActivity", message) }
+             }else{
+                 Log.d("MainActivity","Object saved.")
+             }
+         }*/
 
         setContent {
             RekindleTheme {
@@ -52,8 +53,11 @@ class MainActivity : ComponentActivity() {
 
                     Scaffold(bottomBar = {
                         BottomNavigation(navController = navController)
-                    }) {
-                        NavigationGraph(navController = navController)
+                    }) { innerPadding ->
+                        NavigationGraph(
+                            navController = navController,
+                            modifier = Modifier.padding(innerPadding)
+                        )
                     }
                 }
             }
@@ -62,10 +66,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun NavigationGraph(navController: NavHostController) {
+fun NavigationGraph(navController: NavHostController, modifier: Modifier) {
     NavHost(navController, startDestination = BottomNavItem.Home.route) {
         composable(BottomNavItem.Home.route) {
-            MovieScreen(navController = navController)
+            MovieScreen(navController = navController, modifier = modifier)
         }
         composable(BottomNavItem.Settings.route) {
             SettingsScreen()
