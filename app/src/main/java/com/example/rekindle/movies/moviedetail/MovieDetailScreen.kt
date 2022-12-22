@@ -43,7 +43,7 @@ fun MovieDetail(
     Column {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(movieDetail.poster)
+                .data(movieDetail.getPosterUrl())
                 .crossfade(true)
                 .scale(Scale.FILL)
                 .build(),
@@ -64,11 +64,11 @@ fun MovieDetail(
         )
 
         Text(
-            text = movieDetail.actors,
+            text = movieDetail.overview,
             fontSize = 16.sp
         )
         Text(
-            text = movieDetail.year,
+            text = movieDetail.release_date,
             fontSize = 12.sp
         )
     }

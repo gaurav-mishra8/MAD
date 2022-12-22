@@ -119,7 +119,7 @@ fun MovieItem(movie: Movie, onClick: (Movie) -> Unit) {
         Column {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(movie.imgUrl)
+                    .data(movie.getPosterUrl())
                     .crossfade(true)
                     .scale(Scale.FILL)
                     .build(),
@@ -139,7 +139,7 @@ fun MovieItem(movie: Movie, onClick: (Movie) -> Unit) {
                 style = TextStyle(textAlign = TextAlign.Center)
             )
             Text(
-                text = "Year: ${movie.year}",
+                text = "Release Date: ${movie.releaseDate}",
                 modifier = Modifier
                     .padding(horizontal = 4.dp)
                     .fillMaxWidth(),

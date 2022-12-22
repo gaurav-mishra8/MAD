@@ -18,7 +18,7 @@ class MoviesRepo @Inject constructor(
 ) {
 
     fun searchMovie(query: String): Flow<Result<List<Movie>>> = flow {
-        val movies = moviesService.searchMovies("b10dad57", query).movies
+        val movies = moviesService.searchMovies(query).results
 
         val result: Result<List<Movie>> = if (movies == null) {
             Result.Success(emptyList())
@@ -35,10 +35,10 @@ class MoviesRepo @Inject constructor(
     }
 
     fun getMovieById(id: String): Flow<Result<MovieDetail>> = flow {
-        val movieDetail = moviesService.fetchMovieDetails("b10dad57", id)
+        val movieDetail = moviesService.fetchMovieDetails(id)
 
         val result: Result<MovieDetail> =
-            if (movieDetail == null || movieDetail.response == "False") {
+            if (movieDetail == null) {
                 Result.Error()
             } else {
                 Result.Success(movieDetail)
@@ -48,5 +48,9 @@ class MoviesRepo @Inject constructor(
         emit(Result.Loading)
     }.catch { exception ->
         emit(Result.Error(exception = exception))
+    }
+
+    fun getLatestMovies() {
+
     }
 }

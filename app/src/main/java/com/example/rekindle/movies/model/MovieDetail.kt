@@ -1,54 +1,67 @@
 package com.example.rekindle.movies.model
 
-import com.google.gson.annotations.SerializedName
-
 data class MovieDetail(
-    @SerializedName("Metascore")
-    val metascore: String = "",
-    @SerializedName("BoxOffice")
-    val boxOffice: String = "",
-    @SerializedName("Website")
-    val website: String = "",
-    @SerializedName("imdbRating")
-    val imdbRating: String = "",
-    @SerializedName("imdbVotes")
-    val imdbVotes: String = "",
-    @SerializedName("Runtime")
-    val runtime: String = "",
-    @SerializedName("Language")
-    val language: String = "",
-    @SerializedName("Rated")
-    val rated: String = "",
-    @SerializedName("Production")
-    val production: String = "",
-    @SerializedName("Released")
-    val released: String = "",
-    @SerializedName("imdbID")
-    val imdbID: String = "",
-    @SerializedName("Plot")
-    val plot: String = "",
-    @SerializedName("Director")
-    val director: String = "",
-    @SerializedName("Title")
-    val title: String = "",
-    @SerializedName("Actors")
-    val actors: String = "",
-    @SerializedName("Response")
-    val response: String = "",
-    @SerializedName("Type")
-    val type: String = "",
-    @SerializedName("Awards")
-    val awards: String = "",
-    @SerializedName("DVD")
-    val dvd: String = "",
-    @SerializedName("Year")
-    val year: String = "",
-    @SerializedName("Poster")
-    val poster: String = "",
-    @SerializedName("Country")
-    val country: String = "",
-    @SerializedName("Genre")
-    val genre: String = "",
-    @SerializedName("Writer")
-    val writer: String = ""
+    val adult: Boolean,
+    val backdrop_path: String,
+    val belongs_to_collection: BelongsToCollection,
+    val budget: Int,
+    val genres: List<Genre>,
+    val homepage: String,
+    val id: Int,
+    val imdb_id: String,
+    val original_language: String,
+    val original_title: String,
+    val overview: String,
+    val popularity: Double,
+    val poster_path: String,
+    val production_companies: List<ProductionCompany>,
+    val production_countries: List<ProductionCountry>,
+    val release_date: String,
+    val revenue: Int,
+    val runtime: Int,
+    val spoken_languages: List<SpokenLanguage>,
+    val status: String,
+    val tagline: String,
+    val title: String,
+    val video: Boolean,
+    val vote_average: Double,
+    val vote_count: Int
+) {
+    fun getPosterUrl(): String {
+        return "$IMAGE_BASE_URL${poster_path}"
+    }
+
+    fun getBackdropUrl(): String {
+        return "$IMAGE_BASE_URL${backdrop_path}"
+    }
+}
+
+data class Genre(
+    val id: Int,
+    val name: String
+)
+
+data class BelongsToCollection(
+    val backdrop_path: String,
+    val id: Int,
+    val name: String,
+    val poster_path: String
+)
+
+data class ProductionCompany(
+    val id: Int,
+    val logo_path: String,
+    val name: String,
+    val origin_country: String
+)
+
+data class ProductionCountry(
+    val iso_3166_1: String,
+    val name: String
+)
+
+data class SpokenLanguage(
+    val english_name: String,
+    val iso_639_1: String,
+    val name: String
 )

@@ -1,21 +1,24 @@
 package com.example.rekindle.movies.data
 
+import com.example.rekindle.movies.model.GetPopularMoviesResponse
 import com.example.rekindle.movies.model.MovieDetail
 import com.example.rekindle.movies.model.SearchMovieResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MoviesService {
 
-    @GET(".")
+    @GET("movie/popular")
+    suspend fun getPopularMovies(): GetPopularMoviesResponse
+
+    @GET("search/movie")
     suspend fun searchMovies(
-        @Query("apikey") key: String,
-        @Query("s") query: String
+        @Query("query") query: String
     ): SearchMovieResponse
 
-    @GET(".")
+    @GET("movie/{movieId}")
     suspend fun fetchMovieDetails(
-        @Query("apikey") key: String,
-        @Query("i") query: String
+        @Path("movieId") movieId: String
     ): MovieDetail?
 }
