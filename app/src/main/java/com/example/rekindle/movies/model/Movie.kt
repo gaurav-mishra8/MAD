@@ -1,33 +1,29 @@
 package com.example.rekindle.movies.model
 
-import com.google.gson.annotations.SerializedName
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.rekindle.movies.data.dto.MovieDTO
 
-data class SearchMovieResponse(
-    @SerializedName("page") val page: Int,
-    @SerializedName("results") val results: List<Movie>?,
-    @SerializedName("total_pages") val totalPages: Int,
-    @SerializedName("total_result") val totalResults: Int
-)
-
+@Entity
 data class Movie(
-    @SerializedName("id") val id: String,
-    @SerializedName("original_title") val title: String,
-    @SerializedName("release_date") val releaseDate: String,
-    @SerializedName("overview") val description: String,
-    @SerializedName("poster_path") val posterPath: String,
-    @SerializedName("backdrop_path") val backdropPath: String
+    @PrimaryKey val id: String,
+    @ColumnInfo(name = "title") val title: String,
+    @ColumnInfo(name = "releaseDate") val releaseDate: String,
+    @ColumnInfo(name = "description") val description: String,
+    @ColumnInfo(name = "posterUrl") val posterUrl: String,
 ) {
 
-    fun getPosterUrl(): String {
-        return "$IMAGE_BASE_URL${posterPath}"
+    companion object {
+        fun toMovie(movieDTO: MovieDTO): Movie {
+            return Movie(
+                id = movieDTO.id,
+                title = movieDTO.title,
+                releaseDate = movieDTO.releaseDate,
+                description = movieDTO.description,
+                posterUrl = movieDTO.getPosterUrl,
+            )
+        }
     }
+
 }
-
-data class GetPopularMoviesResponse(
-    @SerializedName("page") val page: Int,
-    @SerializedName("results") val results: List<Movie>?,
-    @SerializedName("total_pages") val totalPages: Int,
-    @SerializedName("total_result") val totalResults: Int
-)
-
-const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original"

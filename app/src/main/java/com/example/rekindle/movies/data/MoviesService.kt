@@ -1,8 +1,8 @@
 package com.example.rekindle.movies.data
 
-import com.example.rekindle.movies.model.GetPopularMoviesResponse
+import com.example.rekindle.movies.data.dto.GetPopularMoviesResponse
+import com.example.rekindle.movies.data.dto.SearchMovieResponse
 import com.example.rekindle.movies.model.MovieDetail
-import com.example.rekindle.movies.model.SearchMovieResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

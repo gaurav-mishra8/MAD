@@ -49,7 +49,7 @@ class MoviesViewModel @Inject constructor(
                 when (result) {
                     is Result.Success -> {
                         MoviesState(
-                            movies = result.data,
+                            movieDTOS = result.data,
                             isLoading = false,
                             error = null,
                             isSearchMode = isSearchActive.value
@@ -57,7 +57,7 @@ class MoviesViewModel @Inject constructor(
                     }
                     is Result.Loading -> {
                         MoviesState(
-                            movies = emptyList(),
+                            movieDTOS = emptyList(),
                             isLoading = true,
                             error = null,
                             isSearchMode = isSearchActive.value
@@ -65,7 +65,7 @@ class MoviesViewModel @Inject constructor(
                     }
                     is Result.Error -> {
                         MoviesState(
-                            movies = emptyList(),
+                            movieDTOS = emptyList(),
                             isLoading = false,
                             error = result.exception?.message ?: "Something went wrong",
                             isSearchMode = isSearchActive.value

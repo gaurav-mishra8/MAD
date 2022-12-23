@@ -1,7 +1,6 @@
 package com.example.rekindle.movies.movieslist
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,12 +8,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,9 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -72,7 +65,7 @@ fun MovieScreen(
                 Text(text = state.value.error!!)
             } else {
                 MovieList(
-                    movies = state.value.movies,
+                    movieDTOS = state.value.movieDTOS,
                     navController
                 )
             }
@@ -82,14 +75,14 @@ fun MovieScreen(
 
 @Composable
 fun MovieList(
-    movies: List<Movie>,
+    movieDTOS: List<Movie>,
     navController: NavHostController
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 128.dp),
     ) {
         items(
-            items = movies,
+            items = movieDTOS,
             key = { it.id },
         ) { movie ->
             MovieItem(movie = movie) {
@@ -114,7 +107,7 @@ fun MovieItem(movie: Movie, onClick: (Movie) -> Unit) {
         Column {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(movie.getPosterUrl())
+                    .data(movie.posterUrl)
                     .crossfade(true)
                     .scale(Scale.FILL)
                     .build(),

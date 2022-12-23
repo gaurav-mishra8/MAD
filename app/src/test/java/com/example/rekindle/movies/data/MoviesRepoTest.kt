@@ -2,7 +2,7 @@ package com.example.rekindle.movies.data
 
 import android.accounts.NetworkErrorException
 import com.example.rekindle.Result
-import com.example.rekindle.movies.model.Movie
+import com.example.rekindle.movies.model.MovieDTO
 import com.example.rekindle.movies.model.SearchMovieResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
@@ -46,7 +46,7 @@ class MoviesRepoTest {
 
         val movieResponse = moviesRepo.searchMovie("world").toList()
 
-        assert((movieResponse[1] as Result.Success).data == movieList)
+        assert((movieResponse[1] as Result.Success).data == movieDTOLists)
     }
 
     @Test
@@ -60,13 +60,13 @@ class MoviesRepoTest {
         assert(movieResponse[1] is Result.Error)
     }
 
-    private val movieList = listOf(
-        Movie(id = "1", title = "hello", year = "2012", imgUrl = "url1"),
-        Movie(id = "2", title = "world", year = "2013", imgUrl = "url2")
+    private val movieDTOLists = listOf(
+        MovieDTO(id = "1", title = "hello", year = "2012", imgUrl = "url1"),
+        MovieDTO(id = "2", title = "world", year = "2013", imgUrl = "url2")
     )
 
     private val testSearchResponse = SearchMovieResponse(
-        movies = movieList,
+        movies = movieDTOLists,
         totalResults = "12",
         error = null
     )

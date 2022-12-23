@@ -1,5 +1,7 @@
 package com.example.rekindle.movies.model
 
+import com.example.rekindle.movies.data.dto.IMAGE_BASE_URL
+
 data class MovieDetail(
     val adult: Boolean,
     val backdrop_path: String?,
