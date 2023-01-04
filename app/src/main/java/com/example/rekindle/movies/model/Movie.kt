@@ -19,7 +19,7 @@ data class Movie(
             return Movie(
                 id = movieDTO.id,
                 title = movieDTO.title,
-                releaseDate = movieDTO.releaseDate,
+                releaseDate = movieDTO.releaseDate ?: "",
                 description = movieDTO.description,
                 posterUrl = movieDTO.getPosterUrl,
             )

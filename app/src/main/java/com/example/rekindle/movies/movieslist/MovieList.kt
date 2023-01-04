@@ -58,7 +58,7 @@ fun MovieScreen(
                 .height(10.dp)
         )
 
-        Box(contentAlignment = Alignment.Center) {
+        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
             if (state.value.isLoading) {
                 CircularProgressIndicator()
             } else if (state.value.error != null) {
