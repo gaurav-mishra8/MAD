@@ -4,9 +4,9 @@ import android.accounts.NetworkErrorException
 import com.example.rekindle.Result
 import com.example.rekindle.movies.data.db.LatestMoviesDao
 import com.example.rekindle.movies.data.db.SearchResultDao
-import com.example.rekindle.movies.data.dto.MovieDTO
 import com.example.rekindle.movies.data.dto.SearchMovieResponse
-import com.example.rekindle.movies.model.Movie
+import com.example.rekindle.movies.movieDTOLists
+import com.example.rekindle.movies.movieList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
@@ -23,7 +23,7 @@ import org.mockito.kotlin.whenever
 @RunWith(JUnit4::class)
 class MoviesRepoTest {
 
-    private lateinit var moviesRepo: MoviesRepo
+    private lateinit var moviesRepo: MoviesRepoImpl
 
     private val movieService: MoviesService = mock(MoviesService::class.java)
     private val searchResultDao = mock(SearchResultDao::class.java)
@@ -31,7 +31,7 @@ class MoviesRepoTest {
 
     @Before
     fun setUp() {
-        moviesRepo = MoviesRepo(movieService, searchResultDao, latestMovieDao)
+        moviesRepo = MoviesRepoImpl(movieService, searchResultDao, latestMovieDao)
     }
 
     @Test
@@ -64,27 +64,6 @@ class MoviesRepoTest {
 
         assert(movieResponse[1] is Result.Error)
     }
-
-    private val movieDTOLists = listOf(
-        MovieDTO(
-            id = "1",
-            title = "hello",
-            releaseDate = "2012",
-            description = "hello movie",
-            posterPath = "url1",
-            backdropPath = "url11"
-        ),
-        MovieDTO(
-            id = "2",
-            title = "world",
-            releaseDate = "2013",
-            description = "world movie",
-            posterPath = "url2",
-            backdropPath = "url22"
-        )
-    )
-
-    private val movieList = movieDTOLists.toMutableList().map { Movie.toMovie(it) }
 
     private val testSearchResponse = SearchMovieResponse(
         page = 1,

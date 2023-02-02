@@ -34,7 +34,7 @@ fun MovieScreen(
     navController: NavHostController,
     modifier: Modifier
 ) {
-    val state = viewModel.updatedState.collectAsState()
+    val state = viewModel.uiState.collectAsState()
 
     Column(modifier = modifier.fillMaxSize()) {
         MovieAppBar(
@@ -65,7 +65,7 @@ fun MovieScreen(
                 Text(text = state.value.error!!)
             } else {
                 MovieList(
-                    movieDTOS = state.value.movieDTOS,
+                    movieDTOS = state.value.movieList,
                     navController
                 )
             }

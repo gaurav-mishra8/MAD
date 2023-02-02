@@ -29,7 +29,7 @@ class MoviesViewModel @Inject constructor(
     }
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-    val updatedState: StateFlow<MoviesState> =
+    val uiState: StateFlow<MoviesState> =
         combine(latestMovies, searchMovies, isSearchActive) { _, searchText, _ ->
             if (searchText.isNotEmpty()) {
                 searchMovies
@@ -49,7 +49,7 @@ class MoviesViewModel @Inject constructor(
                 when (result) {
                     is Result.Success -> {
                         MoviesState(
-                            movieDTOS = result.data,
+                            movieList = result.data,
                             isLoading = false,
                             error = null,
                             isSearchMode = isSearchActive.value
@@ -57,7 +57,7 @@ class MoviesViewModel @Inject constructor(
                     }
                     is Result.Loading -> {
                         MoviesState(
-                            movieDTOS = emptyList(),
+                            movieList = emptyList(),
                             isLoading = true,
                             error = null,
                             isSearchMode = isSearchActive.value
@@ -65,7 +65,7 @@ class MoviesViewModel @Inject constructor(
                     }
                     is Result.Error -> {
                         MoviesState(
-                            movieDTOS = emptyList(),
+                            movieList = emptyList(),
                             isLoading = false,
                             error = result.exception?.message ?: "Something went wrong",
                             isSearchMode = isSearchActive.value
