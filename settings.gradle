@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Rekindle"
 include ':app'
-include ':core-network'
