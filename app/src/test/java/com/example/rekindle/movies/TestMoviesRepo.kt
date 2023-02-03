@@ -7,6 +7,10 @@ import com.example.rekindle.movies.model.MovieDetail
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.ResponseBody
+import okhttp3.internal.http.RealResponseBody
+import retrofit2.HttpException
+import retrofit2.Response
 
 class TestMoviesRepo : MoviesRepo {
 
@@ -23,7 +27,11 @@ class TestMoviesRepo : MoviesRepo {
     }
 
     override fun searchMovie(query: String): Flow<Result<List<Movie>>> = flow {
-        emit(Result.Success(movieList))
+        if (returnError) {
+            emit(Result.Error(NullPointerException(ERROR_MESSAGE)))
+        } else {
+            emit(Result.Success(searchMovieList))
+        }
     }
 
     override fun getMovieById(id: String): Flow<Result<MovieDetail>> {

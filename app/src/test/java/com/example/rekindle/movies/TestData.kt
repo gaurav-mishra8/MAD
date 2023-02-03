@@ -23,3 +23,24 @@ val movieDTOLists = listOf(
 )
 
 val movieList = movieDTOLists.toMutableList().map { Movie.toMovie(it) }
+
+val searchMovieDTOLists = listOf(
+    MovieDTO(
+        id = "1",
+        title = "search result 1",
+        releaseDate = "2012",
+        description = "hello movie",
+        posterPath = "url1",
+        backdropPath = "url11"
+    ),
+    MovieDTO(
+        id = "2",
+        title = "search result 2",
+        releaseDate = "2013",
+        description = "world movie",
+        posterPath = "url2",
+        backdropPath = "url22"
+    )
+)
+
+val searchMovieList = searchMovieDTOLists.toMutableList().map { Movie.toMovie(it) }
