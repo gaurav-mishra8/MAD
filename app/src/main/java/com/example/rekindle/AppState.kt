@@ -33,9 +33,7 @@ class AppState(
     private val snackbarManager: SnackbarManager,
     private val resources: Resources,
     coroutineScope: CoroutineScope
-) {
-
-}
+)
 
 @Composable
 @ReadOnlyComposable
