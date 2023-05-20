@@ -3,7 +3,7 @@ package com.example.rekindle.movies.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.rekindle.movies.data.dto.MovieDTO
+import com.example.model.dto.MovieDTO
 
 @Entity
 data class Movie(

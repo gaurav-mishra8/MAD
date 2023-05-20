@@ -1,5 +1,6 @@
-package com.example.rekindle.movies.data.dto
+package com.example.model.dto
 
+import com.example.constants.IMAGE_BASE_URL
 import com.google.gson.annotations.SerializedName
 
 data class SearchMovieResponse(
@@ -29,5 +30,3 @@ data class GetPopularMoviesResponse(
     @SerializedName("total_pages") val totalPages: Int,
     @SerializedName("total_result") val totalResults: Int
 )
-
-const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original"

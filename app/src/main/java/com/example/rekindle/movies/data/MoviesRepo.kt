@@ -2,7 +2,7 @@ package com.example.rekindle.movies.data
 
 import com.example.rekindle.Result
 import com.example.rekindle.movies.model.Movie
-import com.example.rekindle.movies.model.MovieDetail
+import com.example.model.movies.MovieDetail
 import kotlinx.coroutines.flow.Flow
 
 interface MoviesRepo {

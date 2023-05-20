@@ -1,6 +1,6 @@
 package com.example.rekindle.movies.moviedetail
 
-import com.example.rekindle.movies.model.MovieDetail
+import com.example.model.movies.MovieDetail
 
 data class MovieDetailState(
     val isLoading: Boolean = false,

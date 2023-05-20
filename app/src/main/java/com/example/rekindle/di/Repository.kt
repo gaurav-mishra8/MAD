@@ -9,6 +9,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
@@ -25,5 +26,11 @@ object Repository {
         return MoviesRepoImpl(
             moviesService, searchResultDao, latestMoviesDao
         )
+    }
+
+    @Singleton
+    @Provides
+    fun provideMovieService(retrofit: Retrofit): com.example.rekindle.movies.data.MoviesService {
+        return retrofit.create(com.example.rekindle.movies.data.MoviesService::class.java)
     }
 }

@@ -1,6 +1,6 @@
 package com.example.rekindle.movies
 
-import com.example.rekindle.movies.data.dto.MovieDTO
+import com.example.model.dto.MovieDTO
 import com.example.rekindle.movies.model.Movie
 
 val movieDTOLists = listOf(

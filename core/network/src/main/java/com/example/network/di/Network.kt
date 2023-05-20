@@ -1,6 +1,5 @@
-package com.example.rekindle.di
+package com.example.network.di
 
-import com.example.rekindle.movies.data.MoviesService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,14 +8,10 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 import javax.inject.Singleton
-
-
 @Module
 @InstallIn(SingletonComponent::class)
 object Network {
-
     @Singleton
     @Provides
     fun provideOkHttp(): OkHttpClient {
@@ -41,7 +36,6 @@ object Network {
 
         return httpClient.addInterceptor(logging).build()
     }
-
     @Singleton
     @Provides
     fun provideRetrofit(client: OkHttpClient): Retrofit {
@@ -50,11 +44,5 @@ object Network {
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-    }
-
-    @Singleton
-    @Provides
-    fun provideMovieService(retrofit: Retrofit): MoviesService {
-        return retrofit.create(MoviesService::class.java)
     }
 }

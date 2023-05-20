@@ -1,6 +1,6 @@
-package com.example.rekindle.movies.model
+package com.example.model.movies
 
-import com.example.rekindle.movies.data.dto.IMAGE_BASE_URL
+import com.example.constants.IMAGE_BASE_URL
 
 data class MovieDetail(
     val adult: Boolean,
