@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rekindle.movie_id
 import com.example.rekindle.movies.data.MoviesRepo
-import com.example.rekindle.movies.data.MoviesRepoImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -31,12 +30,14 @@ class MovieDetailViewModel @Inject constructor(
                             isLoading = true
                         )
                     }
+
                     is com.example.rekindle.Result.Success -> {
                         MovieDetailState(
                             isLoading = false,
                             movieDetail = result.data
                         )
                     }
+
                     is com.example.rekindle.Result.Error -> {
                         MovieDetailState(
                             error = result.exception?.message ?: "Something went wrong"

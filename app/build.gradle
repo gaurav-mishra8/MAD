@@ -73,6 +73,11 @@ dependencies {
     implementation project(":core:model")
     implementation project(":core:constants")
 
+    implementation project(path: ':contribution-manager')
+    implementation project(path: ':contributors-api')
+    implementation project(path: ':contributors:home-contributor')
+    implementation project(path: ':contributors:settings-contributor')
+
     implementation "com.github.parse-community.Parse-SDK-Android:parse:4.1.0"
 
     implementation "androidx.room:room-runtime:$room_version"

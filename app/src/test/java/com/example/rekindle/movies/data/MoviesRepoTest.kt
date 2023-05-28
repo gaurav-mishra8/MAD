@@ -1,10 +1,10 @@
 package com.example.rekindle.movies.data
 
 import android.accounts.NetworkErrorException
+import com.example.model.dto.SearchMovieResponse
 import com.example.rekindle.Result
 import com.example.rekindle.movies.data.db.LatestMoviesDao
 import com.example.rekindle.movies.data.db.SearchResultDao
-import com.example.model.dto.SearchMovieResponse
 import com.example.rekindle.movies.movieDTOLists
 import com.example.rekindle.movies.movieList
 import kotlinx.coroutines.ExperimentalCoroutinesApi

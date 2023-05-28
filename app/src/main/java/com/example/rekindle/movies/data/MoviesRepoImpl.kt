@@ -4,7 +4,8 @@ import com.example.model.movies.MovieDetail
 import com.example.rekindle.Result
 import com.example.rekindle.movies.data.db.LatestMoviesDao
 import com.example.rekindle.movies.data.db.SearchResultDao
-import com.example.rekindle.movies.model.*
+import com.example.rekindle.movies.model.Movie
+import com.example.rekindle.movies.model.SearchQuery
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow

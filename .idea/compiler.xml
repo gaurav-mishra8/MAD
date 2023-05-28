@@ -3,8 +3,14 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
       <module name="Rekindle.app" target="17" />
+      <module name="Rekindle.contribution-manager" target="17" />
+      <module name="Rekindle.contributors-api" target="17" />
+      <module name="Rekindle.contributors.home-contributor" target="17" />
+      <module name="Rekindle.contributors.settings-contributor" target="17" />
       <module name="Rekindle.core.model" target="17" />
       <module name="Rekindle.core.network" target="17" />
+      <module name="Rekindle.home-contributor" target="17" />
+      <module name="Rekindle.settings-contributor" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

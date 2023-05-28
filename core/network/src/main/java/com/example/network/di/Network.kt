@@ -1,5 +1,8 @@
 package com.example.network.di
 
+import android.content.Context
+import android.os.Looper
+import dagger.Lazy
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,6 +12,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+
 @Module
 @InstallIn(SingletonComponent::class)
 object Network {
@@ -36,13 +40,27 @@ object Network {
 
         return httpClient.addInterceptor(logging).build()
     }
+
+    @Provides
+    fun provideCache(ctx: Context): Cache {
+        return Cache(ctx.cacheDir, 1024L)
+    }
+
     @Singleton
     @Provides
-    fun provideRetrofit(client: OkHttpClient): Retrofit {
+    fun provideRetrofit(client: Lazy<OkHttpClient>): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
             .addConverterFactory(GsonConverterFactory.create())
-            .client(client)
+            .callFactory {
+                client.get().newCall(it)
+            }
             .build()
+    }
+
+    private fun checkMainThread() {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            throw IllegalStateException("HTTP client initialized on main thread.")
+        }
     }
 }

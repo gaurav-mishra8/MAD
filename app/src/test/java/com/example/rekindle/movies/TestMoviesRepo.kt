@@ -1,9 +1,9 @@
 package com.example.rekindle.movies
 
+import com.example.model.movies.MovieDetail
 import com.example.rekindle.Result
 import com.example.rekindle.movies.data.MoviesRepo
 import com.example.rekindle.movies.model.Movie
-import com.example.model.movies.MovieDetail
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

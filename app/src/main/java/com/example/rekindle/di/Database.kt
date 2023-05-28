@@ -2,7 +2,6 @@ package com.example.rekindle.di
 
 import android.app.Application
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.example.rekindle.movies.data.db.LatestMoviesDao
 import com.example.rekindle.movies.data.db.MoviesDatabase
 import com.example.rekindle.movies.data.db.SearchResultDao
